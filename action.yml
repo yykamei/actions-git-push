@@ -40,11 +40,11 @@ runs:
 
         if [[ -n '${{ inputs.branch }}' ]]; then
           git checkout -b '${{ inputs.branch }}'
-          git push --set-upstream "$force_option" origin '${{ inputs.branch }}'
+          git config branch.${{ inputs.branch }}.merge refs/heads/${{ inputs.branch }}
         fi
 
         git config user.name '${{ inputs.user-name }}'
         git config user.email '${{ inputs.user-email }}'
         git add -A
         git commit -m "${{ inputs.commit-message }}"
-        git push
+        git push "$force_option"
