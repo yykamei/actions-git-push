@@ -27,24 +27,23 @@ runs:
       shell: bash -euxo pipefail {0}
       run: |
         changes=$(git status --short | wc -l)
+        push_suffix=()
         if [[ "$changes" == "0" ]]; then
           echo "Nothing to change"
           exit 0
         fi
 
         if [[ '${{ inputs.force }}' == 'true' ]]; then
-          force_option=()
-        else
-          force_option=(--force)
+          push_suffix+=(--force)
         fi
 
         if [[ -n '${{ inputs.branch }}' ]]; then
           git checkout -b '${{ inputs.branch }}'
-          git config branch.${{ inputs.branch }}.merge refs/heads/${{ inputs.branch }}
+          push_suffix+=(--set-upstream origin ${{ inputs.branch }})
         fi
 
         git config user.name '${{ inputs.user-name }}'
         git config user.email '${{ inputs.user-email }}'
         git add -A
         git commit -m "${{ inputs.commit-message }}"
-        git push "${force_option[@]}"
+        git push "${push_suffix[@]}"
