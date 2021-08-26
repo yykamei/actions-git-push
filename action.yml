@@ -33,9 +33,9 @@ runs:
         fi
 
         if [[ '${{ inputs.force }}' == 'true' ]]; then
-          force_option=''
+          force_option=()
         else
-          force_option='--force'
+          force_option=(--force)
         fi
 
         if [[ -n '${{ inputs.branch }}' ]]; then
@@ -47,4 +47,4 @@ runs:
         git config user.email '${{ inputs.user-email }}'
         git add -A
         git commit -m "${{ inputs.commit-message }}"
-        git push "$force_option"
+        git push "${force_option[@]}"
