@@ -1,0 +1,38 @@
+name: git-push(1)
+description: Run git-push(1)
+inputs:
+  commit-message:
+    description: The branch where to push changes.
+    required: true
+  branch:
+    description: The branch where to push changes.
+    required: false
+    default: ''
+  user-name:
+    description: Git commit user name
+    required: false
+    default: github-actions
+  user-email:
+    description: Git commit user email
+    required: false
+    default: github-actions@github.com
+runs:
+  using: composite
+  steps:
+    - run: |
+        changes=$(git status --short | wc -l)
+        if [[ "$changes" == "0" ]]; then
+          echo "Nothing to change"
+          exit 0
+        fi
+
+        if [[ -n '${{ inputs.branch }}' ]]; then
+          git checkout -b '${{ inputs.branch }}'
+          git push --set-upstream origin '${{ inputs.branch }}'
+        fi
+
+        git config user.name '${{ inputs.user-name }}'
+        git config user.email '${{ inputs.user-email }}'
+        git add -A
+        git commit -m "${{ inputs.commit-message }}"
+        git push
