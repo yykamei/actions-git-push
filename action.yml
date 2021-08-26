@@ -8,6 +8,10 @@ inputs:
     description: The branch where to push changes.
     required: false
     default: ''
+  force:
+    description: Whether to include -f option.
+    required: false
+    default: 'false'
   user-name:
     description: Git commit user name
     required: false
@@ -20,15 +24,23 @@ runs:
   using: composite
   steps:
     - run: |
+        set -u
+
         changes=$(git status --short | wc -l)
         if [[ "$changes" == "0" ]]; then
           echo "Nothing to change"
           exit 0
         fi
 
+        if [[ '${{ inputs.force }}' == 'true' ]]; then
+          force_option=''
+        else
+          force_option='--force'
+        fi
+
         if [[ -n '${{ inputs.branch }}' ]]; then
           git checkout -b '${{ inputs.branch }}'
-          git push --set-upstream origin '${{ inputs.branch }}'
+          git push --set-upstream "$force_option" origin '${{ inputs.branch }}'
         fi
 
         git config user.name '${{ inputs.user-name }}'
