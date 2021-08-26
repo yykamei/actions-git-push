@@ -23,9 +23,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: |
-        set -u
-
+    - name: git-push(1)
+      shell: bash -euxo pipefail {0}
+      run: |
         changes=$(git status --short | wc -l)
         if [[ "$changes" == "0" ]]; then
           echo "Nothing to change"
