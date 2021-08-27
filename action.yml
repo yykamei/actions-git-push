@@ -45,5 +45,5 @@ runs:
         git config user.name '${{ inputs.user-name }}'
         git config user.email '${{ inputs.user-email }}'
         git add -A
-        git commit -m "${{ inputs.commit-message }}"
+        git commit -m '${{ inputs.commit-message }}'
         git push "${push_suffix[@]}"
