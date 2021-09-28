@@ -33,6 +33,10 @@ runs:
           exit 0
         fi
 
+        git config pull.ff only
+        git config user.name '${{ inputs.user-name }}'
+        git config user.email '${{ inputs.user-email }}'
+
         if [[ '${{ inputs.force }}' == 'true' ]]; then
           push_suffix+=(--force)
         fi
@@ -43,8 +47,6 @@ runs:
           push_suffix+=(--set-upstream origin ${{ inputs.branch }})
         fi
 
-        git config user.name '${{ inputs.user-name }}'
-        git config user.email '${{ inputs.user-email }}'
         git add -A
         git commit -m '${{ inputs.commit-message }}'
         git push "${push_suffix[@]}"
