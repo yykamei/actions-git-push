@@ -38,7 +38,8 @@ runs:
         fi
 
         if [[ -n '${{ inputs.branch }}' ]]; then
-          git checkout -b '${{ inputs.branch }}'
+          git pull --depth 50 origin '${{ inputs.branch }}'
+          git checkout '${{ inputs.branch }}'
           push_suffix+=(--set-upstream origin ${{ inputs.branch }})
         fi
 
