@@ -10,8 +10,7 @@ inputs:
     default: ""
   force:
     description: Whether to include -f option.
-    required: false
-    default: "false"
+    type: boolean
   user-name:
     description: Git commit user name
     required: false
