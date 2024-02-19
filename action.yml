@@ -14,11 +14,11 @@ inputs:
   user-name:
     description: Git commit user name
     required: false
-    default: github-actions
+    default: "github-actions[bot]"
   user-email:
     description: Git commit user email
     required: false
-    default: github-actions@github.com
+    default: "41898282+github-actions[bot]@users.noreply.github.com"
 runs:
   using: composite
   steps:
